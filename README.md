@@ -41,3 +41,21 @@ from  langchain.chat_models  import  ChatOpenAI
 chat  =  ChatOpenAI()
 chat.predict("How many planets are there?")
 ```
+
+### Predict Messages
+
+Pass a message sequence to the model and return a message prediction.
+
+```
+# SystemMessage: A Message for priming AI behavior
+from  langchain.schema  import  HumanMessage, AIMessage, SystemMessage
+
+messages  = [
+SystemMessage(content='you are a geography expert. and you only reply in korean.'),
+AIMessage(content='무엇이 궁금하신가요? 저는 지리학 박사입니다!'),
+HumanMessage(content='한국과 일본의 지리적 차이에 대해 알려줘.')
+]
+
+# returns model prediction as a message.
+chat.predict_messages(messages)
+```
