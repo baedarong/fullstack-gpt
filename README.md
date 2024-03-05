@@ -40,6 +40,10 @@ deactivate
 from  langchain.chat_models  import  ChatOpenAI
 chat  =  ChatOpenAI()
 chat.predict("How many planets are there?")
+
+from langchain.llms.openai import OpenAI
+llm = OpenAI(model_name="gpt-3.5-turbo-1106")
+a = llm.predict("How many planets are there?")
 ```
 
 ### Predict Messages
@@ -58,4 +62,39 @@ HumanMessage(content='한국과 일본의 지리적 차이에 대해 알려줘.'
 
 # returns model prediction as a message.
 chat.predict_messages(messages)
+```
+
+### Prompt Templates
+
+Create a chat prompt template from a variety of message formats.
+
+```
+### Prompt Templates
+
+from  langchain.chat_models  import  ChatOpenAI
+from  langchain.prompts  import  PromptTemplate, ChatPromptTemplate
+
+chat = ChatOpenAI(temperature=0.1) ## call Chat large language models API.
+
+# Load a prompt template from a template.
+template = PromptTemplate.from_template('{country_a}과 {country_b}의 지리적 차이에 대해 알려줘.')
+
+prompt = template.format(
+country_a='korea',
+country_b='japan')
+
+# Pass a single string input to the model and return a string prediction.
+chat.predict(prompt)
+
+# Create a chat prompt template from a variety of message formats.
+template = ChatPromptTemplate.from_messages ([
+('system', 'you are a geography expert. and you only reply in {language}.'),
+('ai', '무엇이 궁금하신가요? 저는 {name}입니다!'),
+('human', '{country_a}과 {country_b}의 지리적 차이에 대해 알려줘.')
+])
+
+prompt = template.format_messages(language="korean", name='배다롱', country_a='한국', country_b='일본')
+
+#Pass a message sequence to the model and return a message prediction.
+chat.predict_messages(prompt)
 ```
