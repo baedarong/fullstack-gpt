@@ -48,10 +48,10 @@ LangChain은 자연어 처리(NLP)를 위한 프레임워크로, 특히 대화�
 
 ```
 # 아래와 같이 패키지 형식으로 import 하여 사용하면 각 모델의 API를 자세히 알 필요 없다!
-from  langchain.chat_models  import  ChatOpenAI
+from langchain.chat_models import ChatOpenAI
 from langchain.llms.openai import OpenAI
 
-chat  =  ChatOpenAI()
+chat = ChatOpenAI()
 chat.predict("How many planets are there?")
 
 llm = OpenAI(model_name="gpt-3.5-turbo-1106")
@@ -67,9 +67,9 @@ Pass a message sequence to the model and return a message prediction.
 from  langchain.schema  import  HumanMessage, AIMessage, SystemMessage
 
 messages  = [
-SystemMessage(content='you are a geography expert. and you only reply in korean.'),
-AIMessage(content='무엇이 궁금하신가요? 저는 지리학 박사입니다!'),
-HumanMessage(content='한국과 일본의 지리적 차이에 대해 알려줘.')
+	SystemMessage(content='you are a geography expert. and you only reply in korean.'),
+	AIMessage(content='무엇이 궁금하신가요? 저는 지리학 박사입니다!'),
+	HumanMessage(content='한국과 일본의 지리적 차이에 대해 알려줘.')
 ]
 
 # returns model prediction as a message.
@@ -84,25 +84,25 @@ Create a chat prompt template from a variety of message formats.
 ### Prompt Templates
 
 from  langchain.chat_models  import  ChatOpenAI
-from  langchain.prompts  import  PromptTemplate, ChatPromptTemplate
+from  langchain.callbacks  import  StreamingStdOutCallbackHandler
 
-chat = ChatOpenAI(temperature=0.1) ## call Chat large language models API.
+chat = ChatOpenAI(temperature=0.1, streaming=True, callbacks=[StreamingStdOutCallbackHandler()]) ## call Chat large language models API.
 
 # Load a prompt template from a template.
 template = PromptTemplate.from_template('{country_a}과 {country_b}의 지리적 차이에 대해 알려줘.')
 
 prompt = template.format(
-country_a='korea',
-country_b='japan')
+	country_a='korea',
+	country_b='japan')
 
 # Pass a single string input to the model and return a string prediction.
 chat.predict(prompt)
 
 # Create a chat prompt template from a variety of message formats.
 template = ChatPromptTemplate.from_messages ([
-('system', 'you are a geography expert. and you only reply in {language}.'),
-('ai', '무엇이 궁금하신가요? 저는 {name}입니다!'),
-('human', '{country_a}과 {country_b}의 지리적 차이에 대해 알려줘.')
+	('system', 'you are a geography expert. and you only reply in {language}.'),
+	('ai', '무엇이 궁금하신가요? 저는 {name}입니다!'),
+	('human', '{country_a}과 {country_b}의 지리적 차이에 대해 알려줘.')
 ])
 
 prompt = template.format_messages(language="korean", name='배다롱', country_a='한국', country_b='일본')
@@ -133,6 +133,7 @@ p.parse("hello, how, are, you?")
 ### LCEL
 
 LangChain Expression Language, or LCEL, is a declarative way to easily compose chains together.
+https://js.langchain.com/docs/expression_language/interface
 
 ```
 template = ChatPromptTemplate.from_messages([
@@ -140,7 +141,31 @@ template = ChatPromptTemplate.from_messages([
 	("human", "{question}"),
 ])
 
-# chain organized with template | language Model | Output parser
+# Basic example: prompt + model + output parser
+# The `|` symbol chains together the different components feeds the output from one component as input into the next component.
 chain = template  |  chat  |  CommaOutputParser()
 chain.invoke({"max_items":5, "question": "flowers"})
+```
+
+### Chaining Chains
+
+Chains refer to sequences of calls - whether to an LLM, a tool, or a data preprocessing step. The primary supported way to do this is with [LCEL](https://python.langchain.com/docs/expression_language).
+
+```
+chef_template = ChatPromptTemplate.from_messages([
+	("system", "you are a world-class international chef. you create easy to follow recipies for any typeof cuisins with easy to find ingredients."),
+	("human", "I want to cook {cuision} food."),
+])
+
+chef_chain = chef_template  |  chat
+
+veg_chef_template = ChatPromptTemplate.from_messages([
+	("system", "You are a vegetarian chef specialized on making traditional recipies vegetarian. You find alternative ingredients and explain their preparation. You don't radically modify the recipe. If there is no alternative for a food just say you don't know how to replace it."),
+	("human", "{recipe}"),
+])
+
+veg_chain = veg_chef_template  |  chat
+
+final_chain = {"recipe": chef_chain} | veg_chain
+final_chain.invoke({'cuision':'indian'})
 ```
