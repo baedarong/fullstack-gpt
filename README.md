@@ -195,49 +195,83 @@ LangChain은 다음과 같은 주요 모듈을 위한 확장 가능한 표준 �
 
 ## Model IO
 
-## FewShotPromptTemplate
+### FewShotPromptTemplate
 
 Prompt template that contains few shot examples.
 
 ```
 examples = [
 	{
-	"question": "What do you know about France?",
-	"answer": """
-	Here is what I know:
-	Capital: Paris
-	Language: French
-	Food: Wine and Cheese
-	Currency: Euro
-	""",
+		"question": "What do you know about France?",
+		"answer": """
+		Here is what I know:
+		Capital: Paris
+		Language: French
+		Food: Wine and Cheese
+		Currency: Euro
+		""",
 	},
 	{
-	"question": "What do you know about Italy?",
-	"answer": """
-	I know this:
-	Capital: Rome
-	Language: Italian
-	Food: Pizza and Pasta
-	Currency: Euro
-	""",
+		"question": "What do you know about Italy?",
+		"answer": """
+		I know this:
+		Capital: Rome
+		Language: Italian
+		Food: Pizza and Pasta
+		Currency: Euro
+		""",
 	},
 	{
-	"question": "What do you know about Greece?",
-	"answer": """
-	I know this:
-	Capital: Athens
-	Language: Greek
-	Food: Souvlaki and Feta Cheese
-	Currency: Euro
-	""",
+		"question": "What do you know about Greece?",
+		"answer": """
+		I know this:
+		Capital: Athens
+		Language: Greek
+		Food: Souvlaki and Feta Cheese
+		Currency: Euro
+		""",
 	}
 ]
-
+# 형식화
 examples_template = """
 	Human: {question}
 	AI: {answer}
 """
+# 프롬프트 생성
 example_prompt = PromptTemplate.from_template(examples_template)
+# FewShotPromptTemplate로 전달
+# suffix: A prompt template string to put after the examples.
 prompt = FewShotPromptTemplate(example_prompt=example_prompt, examples=examples, suffix="Human: What do you know about {country}", input_variables=["country"])
-prompt.format(country="Korea")
+chain = prompt  |  chat
+chain.invoke({"country":"Korea"})
+```
+
+### FewShotChatMessagePromptTemplate
+
+Chat prompt template that supports few-shot examples.
+
+```
+example_prompt = ChatPromptTemplate.from_messages(
+	[
+		("human", "What do you know about {country}?"),
+		("ai", "{answer}"),
+	]
+)
+
+# Chat prompt template that supports few-shot examples.
+example_few_shot_prompt = FewShotChatMessagePromptTemplate(
+	example_prompt=example_prompt,
+	examples=examples,
+)
+
+final_prompt = ChatPromptTemplate.from_messages(
+	[
+		("system", "You are a geography expert, you give short answers."),
+		example_few_shot_prompt,
+		("human", "What do you know about {country}?"),
+	]
+)
+
+chain = final_prompt  |  chat
+chain.invoke({"country": "Thailand"})
 ```
