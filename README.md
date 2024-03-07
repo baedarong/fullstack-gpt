@@ -48,14 +48,14 @@ LangChain은 자연어 처리(NLP)를 위한 프레임워크로, 특히 대화�
 
 ```
 # 아래와 같이 패키지 형식으로 import 하여 사용하면 각 모델의 API를 자세히 알 필요 없다!
-from langchain.chat_models import ChatOpenAI
 from langchain.llms.openai import OpenAI
-
-chat = ChatOpenAI()
-chat.predict("How many planets are there?")
+from langchain.chat_models import ChatOpenAI
 
 llm = OpenAI(model_name="gpt-3.5-turbo-1106")
 question = llm.predict("How many planets are there?")
+
+chat = ChatOpenAI()
+chat.predict("How many planets are there?")
 ```
 
 ### Predict Messages
@@ -133,7 +133,8 @@ p.parse("hello, how, are, you?")
 ### LCEL
 
 LangChain Expression Language, or LCEL, is a declarative way to easily compose chains together.
-https://js.langchain.com/docs/expression_language/interface
+The **input type** and **output type** varies by component:
+https://python.langchain.com/docs/expression_language/interface
 
 ```
 template = ChatPromptTemplate.from_messages([
@@ -168,4 +169,75 @@ veg_chain = veg_chef_template  |  chat
 
 final_chain = {"recipe": chef_chain} | veg_chain
 final_chain.invoke({'cuision':'indian'})
+```
+
+## Modules
+
+LangChain은 다음과 같은 주요 모듈을 위한 확장 가능한 표준 인터페이스 및 외부 통합 기능을 제공합니다:
+
+- Model I/O ⭐️
+  언어 모델과의 인터페이스  
+
+- Retrieval  
+  애플리케이션별 데이터를 사용한 인터페이스  
+
+- Agents  
+  높은 수준의 지침이 주어지면 체인이 어떤 도구를 사용할지 선택하도록 합니다  
+
+- Chains  
+  일반적인 빌딩 블록 구성  
+
+- Memory ⭐️
+  체인 실행 간 지속적인 응용 프로그램 상태  
+
+- Callbacks  
+  모든 체인의 중간 단계 기록 및 스트리밍
+
+## Model IO
+
+## FewShotPromptTemplate
+
+Prompt template that contains few shot examples.
+
+```
+examples = [
+	{
+	"question": "What do you know about France?",
+	"answer": """
+	Here is what I know:
+	Capital: Paris
+	Language: French
+	Food: Wine and Cheese
+	Currency: Euro
+	""",
+	},
+	{
+	"question": "What do you know about Italy?",
+	"answer": """
+	I know this:
+	Capital: Rome
+	Language: Italian
+	Food: Pizza and Pasta
+	Currency: Euro
+	""",
+	},
+	{
+	"question": "What do you know about Greece?",
+	"answer": """
+	I know this:
+	Capital: Athens
+	Language: Greek
+	Food: Souvlaki and Feta Cheese
+	Currency: Euro
+	""",
+	}
+]
+
+examples_template = """
+	Human: {question}
+	AI: {answer}
+"""
+example_prompt = PromptTemplate.from_template(examples_template)
+prompt = FewShotPromptTemplate(example_prompt=example_prompt, examples=examples, suffix="Human: What do you know about {country}", input_variables=["country"])
+prompt.format(country="Korea")
 ```
