@@ -1,4 +1,4 @@
-# FullStack GPT
+# 코드봇 Langchain Training
 
 ## Need Skills
 
@@ -274,4 +274,118 @@ final_prompt = ChatPromptTemplate.from_messages(
 
 chain = final_prompt  |  chat
 chain.invoke({"country": "Thailand"})
+```
+
+### LengthBasedExampleSelector, BaseExampleSelector
+
+BaseExampleSelector: Interface for selecting examples to include in prompts.
+LengthBasedExampleSelector: Select examples based on length.
+
+```
+# BaseExampleSelector: Interface for selecting examples to include in prompts.
+# RandomExampleSelector: 여러 examples 중 랜덤으로 하나 뽑는 my 함수
+class  RandomExampleSelector(BaseExampleSelector):
+	def  __init__ (self, examples):
+	self.examples = examples
+
+	def  add_example(self, example):
+	self.examples.append(example)
+
+	def  select_examples(self, input_variables):
+	from  random  import  choice
+	return [choice(self.examples)]
+
+# Select examples based on length.
+example_selector_length = LengthBasedExampleSelector(
+	examples=examples,
+	example_prompt=example_prompt,
+	max_length=80
+)
+
+# Interface for selecting examples to include in prompts.
+example_selector_random = RandomExampleSelector(
+	examples=examples,
+)
+
+# Prompt template that contains few shot examples.
+prompt = FewShotPromptTemplate(
+	example_prompt=example_prompt,
+	example_selector=example_selector_random,
+	suffix="Human: What do you know about {country}?",
+	input_variables=["country"],
+)
+
+prompt.format(country="Brazil")
+```
+
+### Serialization and Composition
+
+여러 프롬프트를 함께 구성하는 방법에 대해 설명합니다. 이는 프롬프트의 일부를 재사용하려는 경우에 유용합니다. 이는 파이프라인 프롬프트를 사용하여 수행할 수 있습니다. 파이프라인 프롬프트는 크게 두 부분으로 구성됩니다:
+
+final_prompt: 반환되는 최종 프롬프트.
+pipeline_prompts: 문자열 이름과 프롬프트 템플릿으로 구성된 튜플 목록입니다. 각 프롬프트 템플릿은 형식이 지정된 다음 동일한 이름의 변수로 향후 프롬프트 템플릿에 전달됩니다.
+https://python.langchain.com/docs/modules/model_io/prompts/pipeline
+
+```
+from  langchain.chat_models  import  ChatOpenAI
+from  langchain.callbacks  import  StreamingStdOutCallbackHandler
+from  langchain.prompts  import  load_prompt
+from  langchain.prompts.pipeline  import  PipelinePromptTemplate
+
+chat = ChatOpenAI(temperature=0.1, streaming=True, callbacks=[StreamingStdOutCallbackHandler()])
+
+# 분리된 프롬프트 불러오기 - loading a prompt from LangChainHub or local fs. (json file, yaml file)
+prompt = load_prompt('./prompt.yaml')
+prompt.format(country="China")
+
+
+intro = PromptTemplate.from_template(
+"""
+You are a role playing assistant.
+And you are impersonating a {character}
+"""
+)
+
+example = PromptTemplate.from_template(
+"""
+This is an example of how you talk:
+Human: {example_question}
+You: {example_answer}
+"""
+)
+
+start = PromptTemplate.from_template(
+"""
+Start now!
+Human: {question}
+You:
+"""
+)
+
+final = PromptTemplate.from_template(
+"""
+{intro}
+{example}
+{start}
+"""
+)
+
+prompts = [
+("intro", intro),
+("example", example),
+("start", start),
+]
+
+# PipelinePromptTemplate: prompt template for composing multiple prompt templates together.
+# 리액트 컴토넌트처럼 프롬프트들을 재사용할 때 유용하다. 하나의 메인 프롬프트(final_prompt)가 존재하고, 나머지 자잘한 프롬프트들을 파이프 라인으로 이어준다.
+full_prompt = PipelinePromptTemplate(final_prompt=final, pipeline_prompts=prompts)
+
+
+chain = full_prompt  |  chat
+chain.invoke({
+"character":"Cat",
+"example_question":"what is your location?",
+"example_answer":"Meow Meow! that is secret! Meow Meow!",
+"question":'what is your favorite food?'
+}).content
 ```
