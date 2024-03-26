@@ -1,5 +1,3 @@
-# 코드봇 Langchain Training
-
 ## Need Skills
 
 1. Langchain / Langsmith LLM framework
@@ -9,7 +7,7 @@
 5. Hugging Face for other models
 6. Virtual Environment setting
 
-```
+```python
 #python3 install
 brew install pyenv
 sudo apt-get update && sudo apt-get upgrade
@@ -33,20 +31,20 @@ deactivate
 
 LangChain은 자연어 처리(NLP)를 위한 프레임워크로, 특히 대화형 AI 시스템을 구축할 때 유용합니다. LangChain의 장점은 다음과 같습니다:
 
-1.  모듈화 및 확장성: LangChain은 여러 NLP 작업을 위한 모듈을 제공하며, 이를 조합하여 복잡한 시스템을 구축할 수 있습니다. 사용자는 필요에 따라 새로운 모듈을 쉽게 추가하거나 기존 모듈을 수정할 수 있습니다.
-2.  대화 관리: LangChain은 대화 상태 관리, 대화 흐름 제어, 멀티턴 대화를 지원하는 기능을 제공하여 사용자가 자연스러운 대화형 AI를 구축할 수 있도록 돕습니다.
-3.  통합된 API: 다양한 NLP 서비스와 툴을 하나의 프레임워크 내에서 쉽게 통합할 수 있어, 개발자가 여러 서비스를 동시에 관리하고 사용하는 데 드는 노력을 줄일 수 있습니다.
-4.  커뮤니티 및 지원: LangChain은 오픈소스 프로젝트로, 개발자 커뮤니티의 지원을 받으며 지속적으로 발전하고 있습니다. 이는 문제 해결, 새로운 기능 추가, 최신 NLP 기술의 통합 등에 도움이 됩니다.
-5.  유연성: LangChain은 다양한 언어와 NLP 엔진을 지원하므로, 개발자는 특정 언어나 기술에 제한되지 않고 자신의 요구에 맞는 시스템을 구축할 수 있습니다.
-6.  빠른 프로토타이핑: LangChain을 사용하면 복잡한 NLP 기능을 빠르게 프로토타입으로 만들 수 있어, 아이디어를 신속하게 테스트하고 반복 개발할 수 있습니다.
-7.  최신 AI 기술 활용: LangChain은 최신 AI 및 NLP 기술을 쉽게 통합할 수 있도록 설계되어 있어, 개발자가 최신 연구 결과와 도구를 활용하여 경쟁력 있는 솔루션을 만들 수 있습니다.
-8.  비용 효율성: 오픈소스 프레임워크인 LangChain을 사용함으로써, 개발 비용을 절감하고, 라이선스 비용 없이 소프트웨어를 사용할 수 있습니다.
+1. 모듈화 및 확장성: LangChain은 여러 NLP 작업을 위한 모듈을 제공하며, 이를 조합하여 복잡한 시스템을 구축할 수 있습니다. 사용자는 필요에 따라 새로운 모듈을 쉽게 추가하거나 기존 모듈을 수정할 수 있습니다.
+2. 대화 관리: LangChain은 대화 상태 관리, 대화 흐름 제어, 멀티턴 대화를 지원하는 기능을 제공하여 사용자가 자연스러운 대화형 AI를 구축할 수 있도록 돕습니다.
+3. 통합된 API: 다양한 NLP 서비스와 툴을 하나의 프레임워크 내에서 쉽게 통합할 수 있어, 개발자가 여러 서비스를 동시에 관리하고 사용하는 데 드는 노력을 줄일 수 있습니다.
+4. 커뮤니티 및 지원: LangChain은 오픈소스 프로젝트로, 개발자 커뮤니티의 지원을 받으며 지속적으로 발전하고 있습니다. 이는 문제 해결, 새로운 기능 추가, 최신 NLP 기술의 통합 등에 도움이 됩니다.
+5. 유연성: LangChain은 다양한 언어와 NLP 엔진을 지원하므로, 개발자는 특정 언어나 기술에 제한되지 않고 자신의 요구에 맞는 시스템을 구축할 수 있습니다.
+6. 빠른 프로토타이핑: LangChain을 사용하면 복잡한 NLP 기능을 빠르게 프로토타입으로 만들 수 있어, 아이디어를 신속하게 테스트하고 반복 개발할 수 있습니다.
+7. 최신 AI 기술 활용: LangChain은 최신 AI 및 NLP 기술을 쉽게 통합할 수 있도록 설계되어 있어, 개발자가 최신 연구 결과와 도구를 활용하여 경쟁력 있는 솔루션을 만들 수 있습니다.
+8. 비용 효율성: 오픈소스 프레임워크인 LangChain을 사용함으로써, 개발 비용을 절감하고, 라이선스 비용 없이 소프트웨어를 사용할 수 있습니다.
 
 이러한 장점들은 LangChain을 사용하여 대화형 AI, 챗봇, 가상 비서 등을 개발하는 데 매우 유용하게 만듭니다.
 
 ### LLMs and Chat Models
 
-```
+```python
 # 아래와 같이 패키지 형식으로 import 하여 사용하면 각 모델의 API를 자세히 알 필요 없다!
 from langchain.llms.openai import OpenAI
 from langchain.chat_models import ChatOpenAI
@@ -60,9 +58,11 @@ chat.predict("How many planets are there?")
 
 ### Predict Messages
 
+모델에 메시지 시퀀스를 전달하고 메시지 예측을 반환합니다.
+
 Pass a message sequence to the model and return a message prediction.
 
-```
+```python
 # SystemMessage: A Message for priming AI behavior
 from  langchain.schema  import  HumanMessage, AIMessage, SystemMessage
 
@@ -78,9 +78,11 @@ chat.predict_messages(messages)
 
 ### Prompt Templates
 
+다양한 메시지 형식을 통해 대화 프롬프트 템플릿을 만듭니다.
+
 Create a chat prompt template from a variety of message formats.
 
-```
+```python
 ### Prompt Templates
 
 from  langchain.chat_models  import  ChatOpenAI
@@ -115,7 +117,7 @@ chat.predict_messages(prompt)
 
 Output parsers help structure language model responses.
 
-```
+```python
 from  langchain.schema  import  BaseOutputParser
 
 # Output parsers help structure language model responses.
@@ -132,11 +134,25 @@ p.parse("hello, how, are, you?")
 
 ### LCEL
 
+LangChain Expression Language, 또는 LCEL은 쉽게 체인을 함께 구성하는 선언적인 방법입니다.
+
 LangChain Expression Language, or LCEL, is a declarative way to easily compose chains together.
-The **input type** and **output type** varies by component:
+
 https://python.langchain.com/docs/expression_language/interface
 
-```
+**입력 유형 및 출력 유형은 구성 요소에 따라 다릅니다:**
+The **input type** and **output type** varies by component:
+
+| Component    | Input Type                                            | Output Type           |
+| ------------ | ----------------------------------------------------- | --------------------- |
+| Prompt       | Dictionary                                            | PromptValue           |
+| ChatModel    | Single string, list of chat messages or a PromptValue | ChatMessage           |
+| LLM          | Single string, list of chat messages or a PromptValue | String                |
+| OutputParser | The output of an LLM or ChatModel                     | Depends on the parser |
+| Retriever    | Single string                                         | List of Documents     |
+| Tool         | Single string or dictionary, depending on the tool    | Depends on the tool   |
+
+```python
 template = ChatPromptTemplate.from_messages([
 	("system", "you are a list generating machine. everything you are asked will be answered with a comma separated list of max {max_items} in lowercase. do not reply with anything else."),
 	("human", "{question}"),
@@ -150,9 +166,11 @@ chain.invoke({"max_items":5, "question": "flowers"})
 
 ### Chaining Chains
 
+체인은 LLM, 도구 또는 데이터 전처리 단계에 대한 호출 시퀀스를 나타냅니다. 이를 수행하는 주요 지원 방법은 LCEL입니다.
+
 Chains refer to sequences of calls - whether to an LLM, a tool, or a data preprocessing step. The primary supported way to do this is with [LCEL](https://python.langchain.com/docs/expression_language).
 
-```
+```python
 chef_template = ChatPromptTemplate.from_messages([
 	("system", "you are a world-class international chef. you create easy to follow recipies for any typeof cuisins with easy to find ingredients."),
 	("human", "I want to cook {cuision} food."),
@@ -176,30 +194,27 @@ final_chain.invoke({'cuision':'indian'})
 LangChain은 다음과 같은 주요 모듈을 위한 확장 가능한 표준 인터페이스 및 외부 통합 기능을 제공합니다:
 
 - Model I/O ⭐️
-  언어 모델과의 인터페이스  
-
-- Retrieval  
-  애플리케이션별 데이터를 사용한 인터페이스  
-
-- Agents  
-  높은 수준의 지침이 주어지면 체인이 어떤 도구를 사용할지 선택하도록 합니다  
-
-- Chains  
-  일반적인 빌딩 블록 구성  
-
+  언어 모델과의 인터페이스
+- Retrieval
+  애플리케이션별 데이터를 사용한 인터페이스
+- Agents
+  높은 수준의 지침이 주어지면 체인이 어떤 도구를 사용할지 선택하도록 합니다
+- Chains
+  일반적인 빌딩 블록 구성
 - Memory ⭐️
-  체인 실행 간 지속적인 응용 프로그램 상태  
-
-- Callbacks  
+  체인 실행 간 지속적인 응용 프로그램 상태
+- Callbacks
   모든 체인의 중간 단계 기록 및 스트리밍
 
 ## Model IO
 
 ### FewShotPromptTemplate
 
+몇 개의 예제를 포함하는 프롬프트 템플릿입니다.
+
 Prompt template that contains few shot examples.
 
-```
+```python
 examples = [
 	{
 		"question": "What do you know about France?",
@@ -248,9 +263,11 @@ chain.invoke({"country":"Korea"})
 
 ### FewShotChatMessagePromptTemplate
 
+**몇 번의 예제를 지원하는 채팅 프롬프트 템플릿.**
+
 Chat prompt template that supports few-shot examples.
 
-```
+```python
 example_prompt = ChatPromptTemplate.from_messages(
 	[
 		("human", "What do you know about {country}?"),
@@ -278,13 +295,13 @@ chain.invoke({"country": "Thailand"})
 
 ### LengthBasedExampleSelector, BaseExampleSelector
 
-BaseExampleSelector: Interface for selecting examples to include in prompts.
-LengthBasedExampleSelector: Select examples based on length.
+BaseExampleSelector: Interface for selecting examples to include in prompts. 프롬프트에 포함할 예제를 선택하기 위한 인터페이스입니다.
+LengthBasedExampleSelector: Select examples based on length. 길이를 기준으로 예제를 선택합니다.
 
-```
+```python
 # BaseExampleSelector: Interface for selecting examples to include in prompts.
-# RandomExampleSelector: 여러 examples 중 랜덤으로 하나 뽑는 my 함수
-class  RandomExampleSelector(BaseExampleSelector):
+# RandomExampleSelector: 여러 examples 중 랜덤으로 하나 뽑는 my_customizing 함수
+class RandomExampleSelector(BaseExampleSelector):
 	def  __init__ (self, examples):
 	self.examples = examples
 
@@ -326,7 +343,7 @@ final_prompt: 반환되는 최종 프롬프트.
 pipeline_prompts: 문자열 이름과 프롬프트 템플릿으로 구성된 튜플 목록입니다. 각 프롬프트 템플릿은 형식이 지정된 다음 동일한 이름의 변수로 향후 프롬프트 템플릿에 전달됩니다.
 https://python.langchain.com/docs/modules/model_io/prompts/pipeline
 
-```
+```python
 from  langchain.chat_models  import  ChatOpenAI
 from  langchain.callbacks  import  StreamingStdOutCallbackHandler
 from  langchain.prompts  import  load_prompt
@@ -338,54 +355,52 @@ chat = ChatOpenAI(temperature=0.1, streaming=True, callbacks=[StreamingStdOutCal
 prompt = load_prompt('./prompt.yaml')
 prompt.format(country="China")
 
-
 intro = PromptTemplate.from_template(
-"""
-You are a role playing assistant.
-And you are impersonating a {character}
-"""
+	"""
+	You are a role playing assistant.
+	And you are impersonating a {character}
+	"""
 )
 
 example = PromptTemplate.from_template(
-"""
-This is an example of how you talk:
-Human: {example_question}
-You: {example_answer}
-"""
+	"""
+	This is an example of how you talk:
+	Human: {example_question}
+	You: {example_answer}
+	"""
 )
 
 start = PromptTemplate.from_template(
-"""
-Start now!
-Human: {question}
-You:
-"""
+	"""
+	Start now!
+	Human: {question}
+	You:
+	"""
 )
 
 final = PromptTemplate.from_template(
-"""
-{intro}
-{example}
-{start}
-"""
+	"""
+	{intro}
+	{example}
+	{start}
+	"""
 )
 
 prompts = [
-("intro", intro),
-("example", example),
-("start", start),
+	("intro", intro),
+	("example", example),
+	("start", start),
 ]
 
 # PipelinePromptTemplate: prompt template for composing multiple prompt templates together.
 # 리액트 컴토넌트처럼 프롬프트들을 재사용할 때 유용하다. 하나의 메인 프롬프트(final_prompt)가 존재하고, 나머지 자잘한 프롬프트들을 파이프 라인으로 이어준다.
 full_prompt = PipelinePromptTemplate(final_prompt=final, pipeline_prompts=prompts)
 
-
 chain = full_prompt  |  chat
 chain.invoke({
-"character":"Cat",
-"example_question":"what is your location?",
-"example_answer":"Meow Meow! that is secret! Meow Meow!",
-"question":'what is your favorite food?'
+	"character":"Cat",
+	"example_question":"what is your location?",
+	"example_answer":"Meow Meow! that is secret! Meow Meow!",
+	"question":'what is your favorite food?'
 }).content
 ```
